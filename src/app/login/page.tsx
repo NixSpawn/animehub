@@ -1,83 +1,160 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Eye, EyeOff, Mail, Lock, ArrowLeft } from "lucide-react"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
+import type React from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Eye, EyeOff, Mail, Lock, ArrowLeft, Sparkles } from "lucide-react";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [rememberMe, setRememberMe] = useState(false)
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const validateForm = () => {
-    const newErrors: { email?: string; password?: string } = {}
+    const newErrors: { email?: string; password?: string } = {};
 
     if (!email) {
-      newErrors.email = "El correo electrónico es requerido"
+      newErrors.email = "El correo electrónico es obligatorio";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Ingresa un correo electrónico válido"
+      newErrors.email = "Ingresa un correo electrónico válido";
     }
 
     if (!password) {
-      newErrors.password = "La contraseña es requerida"
+      newErrors.password = "La contraseña es obligatoria";
     } else if (password.length < 6) {
-      newErrors.password = "La contraseña debe tener al menos 6 caracteres"
+      newErrors.password = "La contraseña debe tener al menos 6 caracteres";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (validateForm()) {
-      // Aquí iría la lógica de autenticación
-      console.log("Login attempt:", { email, password, rememberMe })
+      console.log("Intento de inicio de sesión:", {
+        email,
+        password,
+        rememberMe,
+      });
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-48 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-full blur-3xl animate-pulse delay-2000"></div>
+      </div>
+
+      {/* Floating Particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-60 animate-bounce"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 2}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Mouse Follower Effect */}
+      <div
+        className="fixed w-96 h-96 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl pointer-events-none transition-all duration-1000 ease-out"
+        style={{
+          left: mousePosition.x - 192,
+          top: mousePosition.y - 192,
+        }}
+      />
+
       <Header />
 
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-md mx-auto">
+        <div
+          className={`max-w-md mx-auto transform transition-all duration-1000 ${
+            isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
+          }`}
+        >
           <div className="text-center mb-8">
-            <Button asChild variant="ghost" size="sm" className="mb-4">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="mb-4 text-purple-300 hover:text-purple-200 hover:bg-purple-500/10"
+            >
               <Link href="/">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Volver al Inicio
               </Link>
             </Button>
 
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">¡Bienvenido de vuelta!</h1>
-            <p className="text-gray-600">Inicia sesión para acceder a tu cuenta y continuar tu aventura anime</p>
+            <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">
+              <span className="block animate-fade-in-up">¡Bienvenido de</span>
+              <span className="block bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent animate-gradient-x animate-fade-in-up delay-300">
+                Vuelta!
+              </span>
+            </h1>
+            <p className="text-gray-300 animate-fade-in-up delay-500">
+              Inicia sesión para continuar tu aventura anime
+            </p>
           </div>
 
-          <Card className="shadow-xl border-0">
+          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg hover:shadow-purple-500/25 transition-all duration-500">
             <CardHeader className="space-y-1 pb-6">
-              <CardTitle className="text-2xl text-center">Iniciar Sesión</CardTitle>
-              <CardDescription className="text-center">
+              <CardTitle className="text-2xl text-center text-white">
+                Iniciar Sesión
+              </CardTitle>
+              <CardDescription className="text-center text-gray-300">
                 Ingresa tus credenciales para acceder a tu cuenta
               </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-6">
               {/* Social Login */}
-              <div className="space-y-3">
-                <Button variant="outline" className="w-full" type="button">
+              <div className="space-y-3 animate-fade-in-up delay-700">
+                <Button
+                  variant="outline"
+                  className="w-full border-purple-400/50 text-black hover:text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
+                  type="button"
+                >
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
@@ -99,52 +176,75 @@ export default function LoginPage() {
                   Continuar con Google
                 </Button>
 
-                <Button variant="outline" className="w-full" type="button">
-                  <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <Button
+                  variant="outline"
+                  className="w-full border-purple-400/50 text-black hover:text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
+                  type="button"
+                >
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                   </svg>
                   Continuar con Facebook
                 </Button>
               </div>
 
-              <div className="relative">
+              <div className="relative animate-fade-in-up delay-1000">
                 <div className="absolute inset-0 flex items-center">
-                  <Separator />
+                  <Separator className="bg-purple-500/30" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-gray-500">O continúa con</span>
+                  <span className="bg-transparent px-2 text-gray-300">
+                    O continúa con
+                  </span>
                 </div>
               </div>
 
               {/* Email/Password Form */}
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-4 animate-fade-in-up delay-1000"
+              >
                 <div className="space-y-2">
-                  <Label htmlFor="email">Correo Electrónico</Label>
+                  <Label htmlFor="email" className="text-white">
+                    Correo Electrónico
+                  </Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300 h-4 w-4" />
                     <Input
                       id="email"
                       type="email"
                       placeholder="tu@email.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className={`pl-10 ${errors.email ? "border-red-500" : ""}`}
+                      className={`pl-10 bg-slate-800/50 text-white border-purple-400/30 focus:border-purple-400 backdrop-blur-sm ${
+                        errors.email ? "border-red-500" : ""
+                      }`}
                     />
                   </div>
-                  {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+                  {errors.email && (
+                    <p className="text-sm text-red-400">{errors.email}</p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password">Contraseña</Label>
+                  <Label htmlFor="password" className="text-white">
+                    Contraseña
+                  </Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300 h-4 w-4" />
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Tu contraseña"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className={`pl-10 pr-10 ${errors.password ? "border-red-500" : ""}`}
+                      className={`pl-10 pr-10 bg-slate-800/50 text-white border-purple-400/30 focus:border-purple-400 backdrop-blur-sm ${
+                        errors.password ? "border-red-500" : ""
+                      }`}
                     />
                     <Button
                       type="button"
@@ -154,13 +254,15 @@ export default function LoginPage() {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-400" />
+                        <EyeOff className="h-4 w-4 text-gray-300" />
                       ) : (
-                        <Eye className="h-4 w-4 text-gray-400" />
+                        <Eye className="h-4 w-4 text-gray-300" />
                       )}
                     </Button>
                   </div>
-                  {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
+                  {errors.password && (
+                    <p className="text-sm text-red-400">{errors.password}</p>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -168,16 +270,19 @@ export default function LoginPage() {
                     <Checkbox
                       id="remember"
                       checked={rememberMe}
-                      onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                      onCheckedChange={(checked) =>
+                        setRememberMe(checked as boolean)
+                      }
+                      className="border-purple-400/50 text-purple-400"
                     />
-                    <Label htmlFor="remember" className="text-sm">
+                    <Label htmlFor="remember" className="text-sm text-gray-300">
                       Recordarme
                     </Label>
                   </div>
 
                   <Link
                     href="/recuperar-password"
-                    className="text-sm text-purple-600 hover:text-purple-700 hover:underline"
+                    className="text-sm text-purple-300 hover:text-purple-200 hover:underline"
                   >
                     ¿Olvidaste tu contraseña?
                   </Link>
@@ -185,18 +290,19 @@ export default function LoginPage() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25"
                 >
+                  <Sparkles className="mr-2 h-4 w-4" />
                   Iniciar Sesión
                 </Button>
               </form>
 
-              <div className="text-center pt-4">
-                <p className="text-sm text-gray-600">
+              <div className="text-center pt-4 animate-fade-in-up delay-1000">
+                <p className="text-sm text-gray-300">
                   ¿No tienes una cuenta?{" "}
                   <Link
                     href="/registro"
-                    className="text-purple-600 hover:text-purple-700 font-semibold hover:underline"
+                    className="text-purple-300 hover:text-purple-200 font-semibold hover:underline"
                   >
                     Regístrate aquí
                   </Link>
@@ -206,14 +312,20 @@ export default function LoginPage() {
           </Card>
 
           {/* Security Notice */}
-          <div className="mt-6 text-center">
-            <p className="text-xs text-gray-500">
+          <div className="mt-6 text-center animate-fade-in-up delay-1000">
+            <p className="text-xs text-gray-300">
               Al iniciar sesión, aceptas nuestros{" "}
-              <Link href="/terminos" className="text-purple-600 hover:underline">
+              <Link
+                href="/terminos"
+                className="text-purple-300 hover:underline"
+              >
                 Términos de Servicio
               </Link>{" "}
               y{" "}
-              <Link href="/privacidad" className="text-purple-600 hover:underline">
+              <Link
+                href="/privacidad"
+                className="text-purple-300 hover:underline"
+              >
                 Política de Privacidad
               </Link>
             </p>
@@ -223,5 +335,5 @@ export default function LoginPage() {
 
       <Footer />
     </div>
-  )
+  );
 }
