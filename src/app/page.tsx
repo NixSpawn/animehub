@@ -235,7 +235,7 @@ export default function HomePage() {
             {featuredProducts.map((product, index) => (
               <Card
                 key={product.id}
-                className={`group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border-purple-500/20 hover:border-purple-400/40 transform hover:scale-105 hover:-translate-y-2 animate-fade-in-up`}
+                className={`relative group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border-purple-500/20 hover:border-purple-400/40 transform hover:scale-105 hover:-translate-y-2 animate-fade-in-up py-0`}
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <div className="relative overflow-hidden">

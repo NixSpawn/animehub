@@ -33,8 +33,8 @@ export function Header() {
         {/* Top Bar */}
         <div className="flex items-center justify-between py-2 text-sm border-b border-purple-500/10">
           <div className="hidden md:flex items-center gap-4 text-gray-300">
-            <span className="hover:text-purple-300 transition-colors duration-300">📞 +51 999 999 999</span>
-            <span className="hover:text-purple-300 transition-colors duration-300">✉️ hola@animehub.com</span>
+            <span className="hover:text-purple-300 transition-colors duration-300">📞 +51 925 088 012</span>
+            <span className="hover:text-purple-300 transition-colors duration-300">✉️ ventas@animehub.com</span>
           </div>
           <div className="flex items-center gap-4 text-gray-300">
             <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-medium animate-pulse">

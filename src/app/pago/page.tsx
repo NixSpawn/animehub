@@ -192,7 +192,7 @@ export default function PagoPage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="w-full border-purple-400/50 text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
+                  className="w-full border-purple-400/50 bg- text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
                 >
                   <Link href="/tienda">Continuar Comprando</Link>
                 </Button>
@@ -288,7 +288,7 @@ export default function PagoPage() {
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Shipping Information */}
-              <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg hover:shadow-purple-500/25 transition-all duration-500">
+              <Card className="py-6 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg hover:shadow-purple-500/25 transition-all duration-500">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <MapPin className="h-5 w-5 text-purple-300" />
@@ -442,7 +442,7 @@ export default function PagoPage() {
               </Card>
 
               {/* Payment Method */}
-              <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg hover:shadow-purple-500/25 transition-all duration-500">
+              <Card className="py-6 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg hover:shadow-purple-500/25 transition-all duration-500">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <CreditCard className="h-5 w-5 text-purple-300" />
@@ -681,7 +681,7 @@ export default function PagoPage() {
               isVisible ? "opacity-100" : "opacity-0"
             }`}
           >
-            <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg hover:shadow-purple-500/25 transition-all duration-500">
+            <Card className="py-6 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg hover:shadow-purple-500/25 transition-all duration-500">
               <CardHeader>
                 <CardTitle className="text-white">Resumen del Pedido</CardTitle>
               </CardHeader>

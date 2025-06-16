@@ -148,26 +148,18 @@ export function Footer() {
               <div className="flex items-center gap-3 text-gray-400 group cursor-pointer">
                 <MapPin className="h-4 w-4 flex-shrink-0 group-hover:text-purple-400 transition-colors duration-300" />
                 <span className="group-hover:text-gray-300 transition-colors duration-300">
-                  Av. Anime 123, Miraflores
+                  Av. Anime 123, Huamanga
                   <br />
-                  Lima, Perú
+                  Ayacucho, Perú
                 </span>
               </div>
               <div className="flex items-center gap-3 text-gray-400 group cursor-pointer">
                 <Phone className="h-4 w-4 flex-shrink-0 group-hover:text-purple-400 transition-colors duration-300" />
-                <span className="group-hover:text-gray-300 transition-colors duration-300">+51 999 999 999</span>
+                <span className="group-hover:text-gray-300 transition-colors duration-300">+51 925 088 012</span>
               </div>
               <div className="flex items-center gap-3 text-gray-400 group cursor-pointer">
                 <Mail className="h-4 w-4 flex-shrink-0 group-hover:text-purple-400 transition-colors duration-300" />
-                <span className="group-hover:text-gray-300 transition-colors duration-300">hola@animehub.com</span>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <h5 className="font-medium mb-2 text-white">Horarios de Atención</h5>
-              <div className="text-sm text-gray-400">
-                <p className="hover:text-gray-300 transition-colors duration-300">Lun - Vie: 9:00 AM - 8:00 PM</p>
-                <p className="hover:text-gray-300 transition-colors duration-300">Sáb - Dom: 10:00 AM - 6:00 PM</p>
+                <span className="group-hover:text-gray-300 transition-colors duration-300">ventas@animehub.com</span>
               </div>
             </div>
           </div>

@@ -224,7 +224,7 @@ export default function TiendaPage() {
               </span>
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto animate-fade-in-up delay-500">
-              Más de 10,000 productos auténticos con envío rápido a todo el Perú
+              Más de 10,000 productos auténticos con envío rápido a todo Ayacucho
             </p>
           </div>
         </div>
@@ -356,7 +356,7 @@ export default function TiendaPage() {
             {filteredProducts.map((product, index) => (
               <Card
                 key={product.id}
-                className={`group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-purple-500/20 hover:border-purple-400/40 transform hover:scale-105 hover:-translate-y-2 animate-fade-in-up ${
+                className={`group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-purple-500/20 hover:border-purple-400/40 transform hover:scale-105 hover:-translate-y-2 animate-fade-in-up py-0 ${
                   viewMode === "list" ? "flex flex-row" : ""
                 }`}
                 style={{ animationDelay: `${index * 200}ms` }}

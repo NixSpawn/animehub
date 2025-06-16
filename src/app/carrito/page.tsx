@@ -292,7 +292,7 @@ export default function CarritoPage() {
                 isVisible ? "opacity-100" : "opacity-0"
               }`}
             >
-              <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg">
+              <Card className="py-6 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-white">
                     <ShoppingBag className="h-5 w-5 text-purple-300" />
@@ -416,7 +416,7 @@ export default function CarritoPage() {
                 isVisible ? "opacity-100" : "opacity-0"
               }`}
             >
-              <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg hover:shadow-purple-500/25 transition-all duration-500">
+              <Card className="py-6 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-purple-500/20 backdrop-blur-sm shadow-lg hover:shadow-purple-500/25 transition-all duration-500">
                 <CardHeader>
                   <CardTitle className="text-white">
                     Resumen del Pedido
