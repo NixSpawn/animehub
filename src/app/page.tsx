@@ -42,7 +42,7 @@ export default function HomePage() {
       name: "Manga Attack on Titan Complete Set",
       price: 149.99,
       originalPrice: 200.0,
-      image: "/placeholder.svg?height=300&width=300",
+      image: "/img/featured/img2.jpg",
       category: "Mangas",
       rating: 4.9,
       reviews: 89,
@@ -53,7 +53,7 @@ export default function HomePage() {
       name: "Hoodie Dragon Ball Z Goku Ultra Instinct",
       price: 59.99,
       originalPrice: 80.0,
-      image: "/placeholder.svg?height=300&width=300",
+      image: "/img/featured/img3.webp",
       category: "Ropa",
       rating: 4.7,
       reviews: 156,
@@ -64,7 +64,7 @@ export default function HomePage() {
       name: "Taza Térmica One Piece Luffy Gear 5",
       price: 24.99,
       originalPrice: 35.0,
-      image: "/placeholder.svg?height=300&width=300",
+      image: "/img/featured/img4.webp",
       category: "Tazas",
       rating: 4.6,
       reviews: 203,
@@ -155,7 +155,7 @@ export default function HomePage() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-purple-400/50 text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
+                  className="border-purple-400/50 bg- text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
                 >
                   <Link href="#comunidad">
                     <Users className="mr-2 h-5 w-5" />
@@ -193,7 +193,7 @@ export default function HomePage() {
             </div>
 
             <div
-              className={`relative transform transition-all duration-1000 delay-500 ${isVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}`}
+              className={`hidden lg:flex relative transform transition-all duration-1000 delay-500 ${isVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}`}
             >
               <div className="relative z-10 group">
                 <Image
@@ -235,7 +235,7 @@ export default function HomePage() {
             {featuredProducts.map((product, index) => (
               <Card
                 key={product.id}
-                className={`group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-purple-500/20 hover:border-purple-400/40 transform hover:scale-105 hover:-translate-y-2 animate-fade-in-up`}
+                className={`group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border-purple-500/20 hover:border-purple-400/40 transform hover:scale-105 hover:-translate-y-2 animate-fade-in-up`}
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <div className="relative overflow-hidden">
@@ -284,7 +284,7 @@ export default function HomePage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
 
-                <CardContent className="p-6 bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm">
+                <CardContent className="p-6 bg-transparent backdrop-blur-sm">
                   <Badge
                     variant="secondary"
                     className="mb-3 text-xs bg-purple-500/20 text-purple-300 border-purple-500/30"
@@ -330,7 +330,7 @@ export default function HomePage() {
               asChild
               size="lg"
               variant="outline"
-              className="border-purple-400/50 text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
+              className="border-purple-400/50 bg- text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
             >
               <Link href="/tienda">Ver Todos los Productos</Link>
             </Button>
@@ -437,7 +437,7 @@ export default function HomePage() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-white/50 text-white hover:bg-white/10 hover:border-white backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
+                className="border-white/50 bg- text-white hover:bg-white/10 hover:border-white backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
               >
                 <Link href="/tienda">
                   <ShoppingCart className="mr-2 h-5 w-5" />
