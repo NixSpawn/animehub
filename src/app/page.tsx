@@ -43,6 +43,7 @@ export default function HomePage() {
       price: 149.99,
       originalPrice: 200.0,
       image: "/img/featured/img2.jpg",
+      image: "/img/featured/img2.jpg",
       category: "Mangas",
       rating: 4.9,
       reviews: 89,
