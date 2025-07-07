@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -25,122 +26,54 @@ import {
 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { products as allProducts } from "@/mooks/mook-data";
+
+const categories = [
+  { value: "all", label: "Todas las Categorías" },
+  { value: "figuras", label: "Figuras" },
+  { value: "mangas", label: "Mangas" },
+  { value: "ropa", label: "Ropa" },
+  { value: "tazas", label: "Tazas" },
+  { value: "decorativos", label: "Decorativos" },
+];
+
+const pageSize = 8;
 
 export default function TiendaPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const initialCategory = searchParams.get("category") || "all";
+  const initialSearch = searchParams.get("search") || "";
+  const initialPage = parseInt(searchParams.get("page") || "1", 10);
+
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState(initialSearch);
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState("popular");
+  const [currentPage, setCurrentPage] = useState(initialPage);
+
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
-
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
-
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  const categories = [
-    { value: "all", label: "Todas las Categorías" },
-    { value: "figuras", label: "Figuras" },
-    { value: "mangas", label: "Mangas" },
-    { value: "ropa", label: "Ropa" },
-    { value: "tazas", label: "Tazas" },
-    { value: "decorativos", label: "Decorativos" },
-  ];
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (selectedCategory !== "all") params.set("category", selectedCategory);
+    if (searchTerm) params.set("search", searchTerm);
+    if (currentPage !== 1) params.set("page", currentPage.toString());
+    router.push(`/tienda?${params.toString()}`);
+  }, [searchTerm, selectedCategory, currentPage]);
 
-  const products = [
-    {
-      id: 1,
-      name: "Figura Naruto Uzumaki Sage Mode",
-      price: 89.99,
-      originalPrice: 120.0,
-      image: "/img/featured/img1.jpg",
-      category: "figuras",
-      franchise: "Naruto",
-      rating: 4.8,
-      reviews: 124,
-      description:
-        "Figura de alta calidad de Naruto en modo sabio, con detalles increíbles y articulaciones móviles.",
-      isNew: true,
-    },
-    {
-      id: 2,
-      name: "Manga Attack on Titan Vol. 1-10",
-      price: 149.99,
-      originalPrice: 200.0,
-      image: "/img/featured/img2.jpg",
-      category: "mangas",
-      franchise: "Attack on Titan",
-      rating: 4.9,
-      reviews: 89,
-      description:
-        "Colección completa de los primeros 10 volúmenes de Attack on Titan en español.",
-      isHot: true,
-    },
-    {
-      id: 3,
-      name: "Hoodie Dragon Ball Z Goku",
-      price: 59.99,
-      originalPrice: 80.0,
-      image: "/img/featured/img3.jpg",
-      category: "ropa",
-      franchise: "Dragon Ball",
-      rating: 4.7,
-      reviews: 156,
-      description:
-        "Sudadera con capucha de alta calidad con diseño exclusivo de Goku Super Saiyan.",
-      isNew: true,
-    },
-    {
-      id: 4,
-      name: "Taza Térmica One Piece Luffy",
-      price: 24.99,
-      originalPrice: 35.0,
-      image: "/img/featured/img4.jpg",
-      category: "tazas",
-      franchise: "One Piece",
-      rating: 4.6,
-      reviews: 203,
-      description:
-        "Taza térmica que cambia de diseño con el calor, revelando el Gear 4 de Luffy.",
-      isHot: true,
-    },
-    {
-      id: 5,
-      name: "Poster Decorativo Demon Slayer",
-      price: 19.99,
-      originalPrice: 30.0,
-      image: "/img/featured/img5.jpg",
-      category: "decorativos",
-      franchise: "Demon Slayer",
-      rating: 4.5,
-      reviews: 78,
-      description:
-        "Poster de alta resolución de Tanjiro y Nezuko, perfecto para decorar tu habitación.",
-    },
-    {
-      id: 6,
-      name: "Figura Goku Ultra Instinct",
-      price: 129.99,
-      originalPrice: 160.0,
-      image: "/img/featured/img6.jpg",
-      category: "figuras",
-      franchise: "Dragon Ball",
-      rating: 4.9,
-      reviews: 95,
-      description:
-        "Figura premium de Goku en Ultra Instinto con efectos de energía incluidos.",
-      isNew: true,
-    },
-  ];
-
-  const filteredProducts = products
+  const filteredProducts = allProducts
     .filter((product) => {
       const matchesSearch =
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -158,11 +91,54 @@ export default function TiendaPage() {
         case "rating":
           return b.rating - a.rating;
         case "newest":
-          return b.isNew ? 1 : -1;
+          return (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0);
         default:
           return b.rating * b.reviews - a.rating * a.reviews;
       }
     });
+
+  const totalPages = Math.ceil(filteredProducts.length / pageSize);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const handlePageChange = (page: number) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const renderPagination = () => {
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    return (
+      <div className="flex justify-center mt-8 gap-2">
+        <Button
+          variant="outline"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Anterior
+        </Button>
+        {pages.map((page) => (
+          <Button
+            key={page}
+            variant={page === currentPage ? "default" : "outline"}
+            onClick={() => handlePageChange(page)}
+          >
+            {page}
+          </Button>
+        ))}
+        <Button
+          variant="outline"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Siguiente
+        </Button>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
@@ -337,7 +313,7 @@ export default function TiendaPage() {
             }`}
           >
             <p className="text-gray-300">
-              Mostrando {filteredProducts.length} productos
+              Mostrando {paginatedProducts.length} productos
               {selectedCategory !== "all" &&
                 ` en ${
                   categories.find((c) => c.value === selectedCategory)?.label
@@ -353,7 +329,7 @@ export default function TiendaPage() {
                 : "grid-cols-1"
             }`}
           >
-            {filteredProducts.map((product, index) => (
+            {paginatedProducts.map((product, index) => (
               <Card
                 key={product.id}
                 className={`group hover:shadow-2xl transition-all duration-500 border-0 shadow-lg overflow-hidden bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-purple-500/20 hover:border-purple-400/40 transform hover:scale-105 hover:-translate-y-2 animate-fade-in-up py-0 ${
@@ -489,7 +465,7 @@ export default function TiendaPage() {
             ))}
           </div>
 
-          {filteredProducts.length === 0 && (
+          {paginatedProducts.length === 0 && (
             <div className="text-center py-16 animate-fade-in-up delay-1000">
               <div className="text-gray-300 mb-4">
                 <Search className="h-16 w-16 mx-auto" />
@@ -504,29 +480,14 @@ export default function TiendaPage() {
           )}
 
           {/* Pagination */}
-          {filteredProducts.length > 0 && (
+          {paginatedProducts.length > 0 && (
             <div
               className={`flex justify-center mt-12 animate-fade-in-up delay-1000 ${
                 isVisible ? "opacity-100" : "opacity-0"
               }`}
             >
               <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  disabled
-                  className="border-purple-400/50 text-black hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm"
-                >
-                  Anterior
-                </Button>
-                <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-black">
-                  1
-                </Button>
-                <Button
-                  variant="outline"
-                  className="border-purple-400/50 text-black hover:text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm"
-                >
-                  Siguiente
-                </Button>
+                {renderPagination()}
               </div>
             </div>
           )}

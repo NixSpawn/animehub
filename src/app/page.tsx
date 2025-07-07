@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Star, ShoppingCart, Users, Truck, Shield, Sparkles, Zap, Heart } from "lucide-react"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
+import { products } from "@/mooks/mook-data"
 
 export default function HomePage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -25,52 +26,7 @@ export default function HomePage() {
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [])
 
-  const featuredProducts = [
-    {
-      id: 1,
-      name: "Figura Naruto Uzumaki Sage Mode",
-      price: 89.99,
-      originalPrice: 120.0,
-      image: "/img/featured/img1.jpg",
-      category: "Figuras",
-      rating: 4.8,
-      reviews: 124,
-      isNew: true,
-    },
-    {
-      id: 2,
-      name: "Manga Attack on Titan Complete Set",
-      price: 149.99,
-      originalPrice: 200.0,
-      image: "/img/featured/img2.jpg",
-      category: "Mangas",
-      rating: 4.9,
-      reviews: 89,
-      isHot: true,
-    },
-    {
-      id: 3,
-      name: "Hoodie Dragon Ball Z Goku Ultra Instinct",
-      price: 59.99,
-      originalPrice: 80.0,
-      image: "/img/featured/img3.webp",
-      category: "Ropa",
-      rating: 4.7,
-      reviews: 156,
-      isNew: true,
-    },
-    {
-      id: 4,
-      name: "Taza Térmica One Piece Luffy Gear 5",
-      price: 24.99,
-      originalPrice: 35.0,
-      image: "/img/featured/img4.webp",
-      category: "Tazas",
-      rating: 4.6,
-      reviews: 203,
-      isHot: true,
-    },
-  ]
+  const featuredProducts = products.sort((a, b) => b.rating - a.rating).slice(0, 4)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
@@ -450,54 +406,6 @@ export default function HomePage() {
       </section>
 
       <Footer />
-
-      <style jsx global>{`
-        @keyframes gradient-x {
-          0%, 100% {
-            background-size: 200% 200%;
-            background-position: left center;
-          }
-          50% {
-            background-size: 200% 200%;
-            background-position: right center;
-          }
-        }
-        
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-gradient-x {
-          animation: gradient-x 3s ease infinite;
-        }
-        
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out forwards;
-        }
-        
-        .delay-300 {
-          animation-delay: 300ms;
-        }
-        
-        .delay-500 {
-          animation-delay: 500ms;
-        }
-        
-        .delay-700 {
-          animation-delay: 700ms;
-        }
-        
-        .delay-1000 {
-          animation-delay: 1000ms;
-        }
-      `}</style>
     </div>
   )
 }
