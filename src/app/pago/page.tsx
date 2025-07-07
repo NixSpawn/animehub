@@ -1,20 +1,25 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
-import { PersonalInfoForm } from "@/components/checkout/personal-info-form"
-import { PaymentMethodSelection } from "@/components/checkout/payment-method-selection"
-import { CardPaymentForm } from "@/components/checkout/card-payment-form"
-import { YapePaymentForm } from "@/components/checkout/yape-payment-form"
-import { PaymentSuccess } from "@/components/checkout/payment-success"
-import { OrderSummary } from "@/components/checkout/order-summary"
-import { CheckoutBackground } from "@/components/checkout/checkout-background"
-import { CheckoutHeader } from "@/components/checkout/checkout-header"
-import { CardInfo, PaymentMethod, PersonalInfo, YapeInfo } from "@/types/checkout-types"
+import { useState } from "react";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { PersonalInfoForm } from "@/components/checkout/personal-info-form";
+import { PaymentMethodSelection } from "@/components/checkout/payment-method-selection";
+import { CardPaymentForm } from "@/components/checkout/card-payment-form";
+import { YapePaymentForm } from "@/components/checkout/yape-payment-form";
+import { PaymentSuccess } from "@/components/checkout/payment-success";
+import { OrderSummary } from "@/components/checkout/order-summary";
+import { CheckoutBackground } from "@/components/checkout/checkout-background";
+import { CheckoutHeader } from "@/components/checkout/checkout-header";
+import {
+  CardInfo,
+  PaymentMethod,
+  PersonalInfo,
+  YapeInfo,
+} from "@/types/checkout-types";
 
 export default function CheckoutPage() {
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(1);
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
     firstName: "",
     lastName: "",
@@ -26,21 +31,21 @@ export default function CheckoutPage() {
     province: "",
     district: "",
     postalCode: "",
-  })
+  });
 
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card")
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [cardInfo, setCardInfo] = useState<CardInfo>({
     cardNumber: "",
     expiryDate: "",
     cvv: "",
     cardName: "",
     cardType: "",
-  })
+  });
 
   const [yapeInfo, setYapeInfo] = useState<YapeInfo>({
     phoneNumber: "",
     otpCode: "",
-  })
+  });
 
   const cartItems = [
     {
@@ -61,40 +66,48 @@ export default function CheckoutPage() {
       category: "Mangas",
       inStock: true,
     },
-  ]
+  ];
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shipping = 0
-  const total = subtotal + shipping
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const shipping = 0;
+  const total = subtotal + shipping;
 
   const handlePersonalInfoSubmit = (data: PersonalInfo) => {
-    setPersonalInfo(data)
-    setCurrentStep(2)
-  }
+    setPersonalInfo(data);
+    setCurrentStep(2);
+  };
 
   const handlePaymentMethodSelect = (method: PaymentMethod) => {
-    setPaymentMethod(method)
-    setCurrentStep(3)
-  }
+    setPaymentMethod(method);
+    setCurrentStep(3);
+  };
 
   const handleCardPaymentSubmit = (data: CardInfo) => {
-    setCardInfo(data)
-    setCurrentStep(4)
-  }
+    setCardInfo(data);
+    setCurrentStep(4);
+  };
 
   const handleYapePaymentSubmit = (data: YapeInfo) => {
-    setYapeInfo(data)
-    setCurrentStep(4)
-  }
+    setYapeInfo(data);
+    setCurrentStep(4);
+  };
 
   const handleBackStep = () => {
-    setCurrentStep(currentStep - 1)
-  }
+    setCurrentStep(currentStep - 1);
+  };
 
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return <PersonalInfoForm initialData={personalInfo} onSubmit={handlePersonalInfoSubmit} />
+        return (
+          <PersonalInfoForm
+            initialData={personalInfo}
+            onSubmit={handlePersonalInfoSubmit}
+          />
+        );
       case 2:
         return (
           <PaymentMethodSelection
@@ -102,7 +115,7 @@ export default function CheckoutPage() {
             onSelect={handlePaymentMethodSelect}
             onBack={handleBackStep}
           />
-        )
+        );
       case 3:
         return paymentMethod === "card" ? (
           <CardPaymentForm
@@ -117,8 +130,9 @@ export default function CheckoutPage() {
             onSubmit={handleYapePaymentSubmit}
             onBack={handleBackStep}
             total={total}
+            personalInfo={personalInfo}
           />
-        )
+        );
       case 4:
         return (
           <PaymentSuccess
@@ -127,11 +141,11 @@ export default function CheckoutPage() {
             total={total}
             orderNumber="AH-2024-001234"
           />
-        )
+        );
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   if (currentStep === 4) {
     return (
@@ -141,7 +155,7 @@ export default function CheckoutPage() {
         {renderCurrentStep()}
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
@@ -154,12 +168,17 @@ export default function CheckoutPage() {
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">{renderCurrentStep()}</div>
           <div className="space-y-6">
-            <OrderSummary cartItems={cartItems} subtotal={subtotal} shipping={shipping} total={total} />
+            <OrderSummary
+              cartItems={cartItems}
+              subtotal={subtotal}
+              shipping={shipping}
+              total={total}
+            />
           </div>
         </div>
       </div>
 
       <Footer />
     </div>
-  )
+  );
 }

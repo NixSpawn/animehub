@@ -2,34 +2,60 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useTransition } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Phone, ArrowLeft, Sparkles, Smartphone } from "lucide-react"
 import Image from "next/image"
-import { YapeInfo } from "@/types/checkout-types"
+import { PersonalInfo, YapeInfo } from "@/types/checkout-types"
+import { toast } from "sonner"
+import { pagarConYape } from "@/actions/pagarConYape"
 
 interface YapePaymentFormProps {
   initialData: YapeInfo
+  personalInfo: PersonalInfo 
   onSubmit: (data: YapeInfo) => void
   onBack: () => void
   total: number
 }
 
-export function YapePaymentForm({ initialData, onSubmit, onBack, total }: YapePaymentFormProps) {
+export function YapePaymentForm({ initialData, personalInfo, onSubmit, onBack, total }: YapePaymentFormProps) {
   const [formData, setFormData] = useState<YapeInfo>(initialData)
-  const [isProcessing, setIsProcessing] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsProcessing(true)
-
-    // Simular procesamiento de pago
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-
-    onSubmit(formData)
+  
+    startTransition(async () => {
+      try {
+        const response = await pagarConYape({
+          phoneNumber: formData.phoneNumber,
+          otp: formData.otpCode,
+          requestId: crypto.randomUUID(),
+          amount: total,
+          payer: {
+            email: personalInfo.email,
+            first_name: personalInfo.firstName,
+            last_name: personalInfo.lastName,
+            identification: {
+              type: "DNI",
+              number: personalInfo.dni
+            }
+          }
+        })
+  
+        if (response.success) {
+          onSubmit(formData)
+        } else {
+          toast.success("El pago no fue aprobado.")
+        }
+      } catch (error) {
+        console.error("Error en el pago Yape:", error)
+        toast.error("Hubo un problema al procesar el pago.")
+      }
+    })
   }
 
   const isFormValid = () => {
@@ -120,17 +146,17 @@ export function YapePaymentForm({ initialData, onSubmit, onBack, total }: YapePa
               onClick={onBack}
               variant="outline"
               className="flex-1 border-purple-400/50 text-white hover:bg-purple-500/20 hover:border-purple-400 backdrop-blur-sm bg-transparent"
-              disabled={isProcessing}
+              disabled={isPending}
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Volver
             </Button>
             <Button
               type="submit"
-              disabled={!isFormValid() || isProcessing}
+              disabled={!isFormValid() || isPending}
               className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isProcessing ? (
+              {isPending ? (
                 <>Procesando Pago...</>
               ) : (
                 <>
