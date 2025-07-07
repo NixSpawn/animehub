@@ -120,6 +120,7 @@ export default function CheckoutPage() {
         return paymentMethod === "card" ? (
           <CardPaymentForm
             initialData={cardInfo}
+            personalInfo={personalInfo}
             onSubmit={handleCardPaymentSubmit}
             onBack={handleBackStep}
             total={total}
