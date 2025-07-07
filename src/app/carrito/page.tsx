@@ -24,8 +24,8 @@ export default function CarritoPage() {
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
-      name: "Figura Naruto Uzumaki Sage Mode",
-      price: 89.99,
+      name: "Llavero de Anime",
+      price: 0.99,
       quantity: 1,
       image: "/img/featured/img1.jpg",
       category: "Figuras",
@@ -33,21 +33,12 @@ export default function CarritoPage() {
     },
     {
       id: 2,
-      name: "Manga Attack on Titan Vol. 1-10",
-      price: 149.99,
+      name: "Pegatina goku ssj",
+      price: 1.01,
       quantity: 1,
-      image: "/img/featured/img2.jpg",
+      image: "/img/featured/img5.jpg",
       category: "Mangas",
       inStock: true,
-    },
-    {
-      id: 3,
-      name: "Hoodie Dragon Ball Z Goku",
-      price: 59.99,
-      quantity: 2,
-      image: "/img/featured/img3.jpg",
-      category: "Ropa",
-      inStock: false,
     },
   ]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -81,7 +72,7 @@ export default function CarritoPage() {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-  const shipping = subtotal > 100 ? 0 : 15;
+  const shipping = subtotal > 100 ? 0 : 0;
   const total = subtotal + shipping;
 
   // Simulamos que el usuario no está logueado
@@ -435,7 +426,7 @@ export default function CarritoPage() {
                         shipping === 0 ? "text-green-400 font-semibold" : ""
                       }
                     >
-                      {shipping === 0 ? "GRATIS" : `S/ ${shipping.toFixed(2)}`}
+                      {shipping === 0 ? "GRATIS" : `S/ ${Number(shipping).toFixed(2)}`}
                     </span>
                   </div>
 

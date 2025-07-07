@@ -5,7 +5,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { ShoppingCart, Search, User, Heart, Menu, X, Star, Sparkles } from "lucide-react"
+import { ShoppingCart, Search, User, Heart, Menu, X, Sparkles } from "lucide-react"
+import Image from "next/image"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -50,9 +51,7 @@ export function Header() {
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-lg group-hover:shadow-purple-500/25">
-              <Star className="h-7 w-7 text-white animate-pulse" />
-            </div>
+            <Image src="/img/logo/logo.png" alt="Logo" width={70} height={50} />
             <div>
               <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent animate-gradient-x">
                 AnimeHub
